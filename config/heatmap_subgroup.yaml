@@ -1,0 +1,4 @@
+DATASET: SMU # SMU TCGA
+TOP_N: 100
+GEN: 7g10l # IDH TERT 1p19q 7g10l
+SAVE_DIR: /media/zbc/MyBook/glioma/code/nanfang/transMIL/figure/heatmap_combine/subgroup

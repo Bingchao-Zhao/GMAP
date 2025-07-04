@@ -1,0 +1,33 @@
+TOP_N: 100
+DATASET: TCGA # SMU TCGA GDPH
+GEN: 1p19q # IDH TERT 1p19q 7g10l
+# TOP_LAST M_W
+MOD: M_W # TOTAL TOP_LAST M_W 
+EXTRACT_FEA: True
+SAVE_DIR_COM_IMG: /media/zbc/MyBook/glioma/data/nanfang/top_n_patches
+TOP20_PATCH_DIR: /media/zbc/MyBook/glioma/data/nanfang/top_20_patches
+# FEAT_RECORD: /media/zbc/MyBook/glioma/data/nanfang/top_n_patches_record
+FEAT_RECORD: /media/zbc/MyBook/glioma/data/nanfang/top_n_patches_record_2
+PATCH_MEAN_FEA_RECORD: /media/zbc/MyBook/glioma/data/nanfang/patches_mean_record
+IMG_SEG_MASK_COM_DIR: /media/zbc/MyBook/glioma/data/nanfang/img_seg_mask/
+BASE_IND: 30
+IND_SPLIT:
+  TCGA: _
+  SMU: '#'
+POSTIVE: 
+  IDH: Mutant
+  TERT: Mutant
+  1p19q: codel
+  7g10l: 'Gain chr 7 & loss chr 10'
+SAVE_PLOT_DIR: 
+  SMU:
+    TOTAL: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot/
+    TOP_LAST: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot/
+    M_W: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot/
+  TCGA:
+    TOTAL: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot_TCGA/
+    TOP_LAST: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot_TCGA/
+    M_W: /media/zbc/MyBook/glioma/code/nanfang/transMIL/temp/feat_plot_TCGA/
+
+
+

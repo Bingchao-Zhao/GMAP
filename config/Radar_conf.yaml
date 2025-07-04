@@ -1,0 +1,15 @@
+DATASET: TCGA # SMU TCGA
+# GEN: 7g10l # IDH TERT 1p19q 7g10l
+SAVE_DIR: /media/zbc/MyBook/glioma/code/nanfang/transMIL/figure/Radar
+
+COLOR_NAME: 
+  IDH: deepskyblue 
+  TERT: lightcoral 
+  1p19q: limegreen 
+  7g10l: slateblue 
+
+PLOT_C:
+  alpha: .1
+  y_tick_size: 8
+  xticks_size: 8
+  ytick: [-0.8, -0.4, 0, 0.4, 0.8]

@@ -1,0 +1,17 @@
+DATASET: TCGA # SMU TCGA
+GEN: 7g10l # IDH TERT 1p19q 7g10l
+DATA_DIR: figure/data/handcraft_feature/第一次统计数据
+# DATA_DIR_2: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_feature/第二次统计数据/
+SAVE_DIR: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_heatmap
+SAVE_DIR_2: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/handcraft_heatmap/second
+SAVE_DIR_3: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/handcraft_heatmap/third
+
+TOP_N_2: 20
+DATA_DIR_2: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_feature/第二次统计数据/label
+SECOND_COMBINE: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_feature/第二次统计数据/combine.csv
+
+DATA_DIR_3: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_feature/第三次7g10l/710_smu+tcga
+THIRD_COMBINE: /media/zbc/M008/nanfang/code/nanfang/transMIL/figure/data/handcraft_feature/第三次7g10l/combine_710.csv
+
+# DATA_DIR: /media/zbc/MyBook/glioma/code/nanfang/transMIL/figure/data/handcraft_feature
+# SAVE_DIR: /media/zbc/MyBook/glioma/code/nanfang/transMIL/figure/handcraft_heatmap

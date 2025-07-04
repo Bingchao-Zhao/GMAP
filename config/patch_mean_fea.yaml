@@ -1,0 +1,4 @@
+DATASET: TCGA # SMU TCGA
+GEN: IDH # IDH TERT 1p19q 7g10l
+SAVE_DIR: /media/zbc/MyBook/glioma/data/nanfang/Patch_mean_fea
+SAVE_PATCH_NUM: 80
