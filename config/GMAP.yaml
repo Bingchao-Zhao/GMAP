@@ -1,0 +1,46 @@
+General:
+    comment: 
+    seed: 2021
+    fp16: True
+    amp_level: O2
+    precision: 32 
+    multi_gpu_mode: dp
+    gpus: [0]
+    epochs: &epoch 200 
+    grad_acc: 2
+    frozen_bn: False
+    patience: 40
+    server: test #train #test
+    log_path: logs # logs/test logs
+    model_name: MGAP
+Data:
+    dataset_name: camel_data
+    data_shuffle: False
+
+
+    train_dataloader:
+        batch_size: 1 
+        num_workers: 0
+
+    test_dataloader:
+        batch_size: 1
+        num_workers: 1
+
+Model:
+    name: GMAP
+    n_classes: 2
+
+
+Optimizer:
+    opt: lookahead_radam
+    # lr: 0.00001
+    # lr: 0.001
+    lr: 0.008
+    opt_eps: null 
+    opt_betas: null
+    momentum: null 
+    weight_decay: 0.00001
+
+Loss:
+    base_loss: CrossEntropyLoss
+

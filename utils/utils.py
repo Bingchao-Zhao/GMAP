@@ -12,20 +12,19 @@ def read_yaml(fpath=None):
 from pytorch_lightning import loggers as pl_loggers
 def load_loggers(cfg):
     cfg.conf_log_path = cfg.General.log_path
-    log_path = os.path.join(cfg.General.log_path, cfg.mod_name, cfg.extractor, cfg.ds,cfg.gen_type, cfg.resolu, cfg.mod)
+    log_path = os.path.join(cfg.General.log_path, cfg.mod_name, cfg.extractor, cfg.ds,cfg.gen_type)
     Path(log_path).mkdir(exist_ok=True, parents=True)
     log_name = Path(cfg.config).parent 
-    version_name = Path(cfg.config).name[:-5]
-    cfg.log_path = Path(log_path) / log_name / f'{cfg.General.model_name}' / f'fold{cfg.Data.fold}'
+    cfg.log_path = Path(log_path) /  f'{cfg.General.model_name}' 
     print(f'---->Log dir: {cfg.log_path}')
     
     #---->TensorBoard
-    tb_logger = pl_loggers.TensorBoardLogger(log_path+str(log_name),
-                                             name = cfg.General.model_name, version = f'fold{cfg.Data.fold}',
+    tb_logger = pl_loggers.TensorBoardLogger(log_path, version = '',
+                                             name = cfg.General.model_name, 
                                              log_graph = True, default_hp_metric = False)
     #---->CSV
-    csv_logger = pl_loggers.CSVLogger(log_path+str(log_name),
-                                      name = cfg.General.model_name, version = f'fold{cfg.Data.fold}', )
+    csv_logger = pl_loggers.CSVLogger(log_path, version = '',
+                                      name = cfg.General.model_name)
     
     return [tb_logger, csv_logger]
 

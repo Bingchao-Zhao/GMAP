@@ -1,0 +1,486 @@
+General: &id002 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - comment
+    - null
+  - !!python/tuple
+    - seed
+    - 2021
+  - !!python/tuple
+    - fp16
+    - true
+  - !!python/tuple
+    - amp_level
+    - O2
+  - !!python/tuple
+    - precision
+    - 32
+  - !!python/tuple
+    - multi_gpu_mode
+    - dp
+  - !!python/tuple
+    - gpus
+    - &id001
+      - 0
+  - !!python/tuple
+    - epochs
+    - 200
+  - !!python/tuple
+    - grad_acc
+    - 2
+  - !!python/tuple
+    - frozen_bn
+    - false
+  - !!python/tuple
+    - patience
+    - 40
+  - !!python/tuple
+    - server
+    - train
+  - !!python/tuple
+    - log_path
+    - logs
+  - !!python/tuple
+    - model_name
+    - MGAP
+  dictitems:
+    amp_level: O2
+    comment: null
+    epochs: 200
+    fp16: true
+    frozen_bn: false
+    gpus: *id001
+    grad_acc: 2
+    log_path: logs
+    model_name: MGAP
+    multi_gpu_mode: dp
+    patience: 40
+    precision: 32
+    seed: 2021
+    server: train
+  state: *id002
+cfg: &id016 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - General
+    - &id004 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - comment
+        - null
+      - !!python/tuple
+        - seed
+        - 2021
+      - !!python/tuple
+        - fp16
+        - true
+      - !!python/tuple
+        - amp_level
+        - O2
+      - !!python/tuple
+        - precision
+        - 32
+      - !!python/tuple
+        - multi_gpu_mode
+        - dp
+      - !!python/tuple
+        - gpus
+        - &id003
+          - 0
+      - !!python/tuple
+        - epochs
+        - 200
+      - !!python/tuple
+        - grad_acc
+        - 2
+      - !!python/tuple
+        - frozen_bn
+        - false
+      - !!python/tuple
+        - patience
+        - 40
+      - !!python/tuple
+        - server
+        - test
+      - !!python/tuple
+        - log_path
+        - logs
+      - !!python/tuple
+        - model_name
+        - MGAP
+      dictitems:
+        amp_level: O2
+        comment: null
+        epochs: 200
+        fp16: true
+        frozen_bn: false
+        gpus: *id003
+        grad_acc: 2
+        log_path: logs
+        model_name: MGAP
+        multi_gpu_mode: dp
+        patience: 40
+        precision: 32
+        seed: 2021
+        server: test
+      state: *id004
+  - !!python/tuple
+    - Data
+    - &id007 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - dataset_name
+        - camel_data
+      - !!python/tuple
+        - data_shuffle
+        - false
+      - !!python/tuple
+        - train_dataloader
+        - &id005 !!python/object/new:addict.addict.Dict
+          args:
+          - !!python/tuple
+            - batch_size
+            - 1
+          - !!python/tuple
+            - num_workers
+            - 0
+          dictitems:
+            batch_size: 1
+            num_workers: 0
+          state: *id005
+      - !!python/tuple
+        - test_dataloader
+        - &id006 !!python/object/new:addict.addict.Dict
+          args:
+          - !!python/tuple
+            - batch_size
+            - 1
+          - !!python/tuple
+            - num_workers
+            - 1
+          dictitems:
+            batch_size: 1
+            num_workers: 1
+          state: *id006
+      dictitems:
+        data_shuffle: false
+        dataset_name: camel_data
+        test_dataloader: *id006
+        train_dataloader: *id005
+      state: *id007
+  - !!python/tuple
+    - Model
+    - &id008 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - name
+        - GMAP
+      - !!python/tuple
+        - n_classes
+        - 2
+      dictitems:
+        n_classes: 2
+        name: GMAP
+      state: *id008
+  - !!python/tuple
+    - Optimizer
+    - &id009 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - opt
+        - lookahead_radam
+      - !!python/tuple
+        - lr
+        - 0.008
+      - !!python/tuple
+        - opt_eps
+        - null
+      - !!python/tuple
+        - opt_betas
+        - null
+      - !!python/tuple
+        - momentum
+        - null
+      - !!python/tuple
+        - weight_decay
+        - 1.0e-05
+      dictitems:
+        lr: 0.008
+        momentum: null
+        opt: lookahead_radam
+        opt_betas: null
+        opt_eps: null
+        weight_decay: 1.0e-05
+      state: *id009
+  - !!python/tuple
+    - Loss
+    - &id010 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - base_loss
+        - CrossEntropyLoss
+      dictitems:
+        base_loss: CrossEntropyLoss
+      state: *id010
+  - !!python/tuple
+    - config
+    - config/GMAP.yaml
+  - !!python/tuple
+    - gen_type
+    - IDH
+  - !!python/tuple
+    - ds
+    - TCGA
+  - !!python/tuple
+    - infer_ds
+    - &id013 !!python/object/apply:builtins.StopIteration
+      - TCGA
+  - !!python/tuple
+    - extractor
+    - UNI
+  - !!python/tuple
+    - mod_name
+    - GMAP
+  - !!python/tuple
+    - conf_log_path
+    - logs
+  - !!python/tuple
+    - log_path
+    - &id015 !!python/object/apply:pathlib.PosixPath
+      - logs
+      - GMAP
+      - UNI
+      - TCGA
+      - IDH
+      - MGAP
+  - !!python/tuple
+    - load_loggers
+    - &id014
+      - !!python/object:pytorch_lightning.loggers.tensorboard.TensorBoardLogger
+        _default_hp_metric: false
+        _experiment: null
+        _fs: &id011 !!python/object/apply:fsspec.spec.make_instance
+        - !!python/name:fsspec.implementations.local.LocalFileSystem ''
+        - !!python/tuple []
+        - {}
+        _kwargs: {}
+        _log_graph: !!python/object:lightning_utilities.core.imports.RequirementCache
+          available: true
+          message: Requirement 'tensorboard' met
+          module: null
+          requirement: tensorboard
+        _name: MGAP
+        _prefix: ''
+        _root_dir: logs/GMAP/UNI/TCGA/IDH
+        _sub_dir: null
+        _version: ''
+        hparams: {}
+      - !!python/object:pytorch_lightning.loggers.csv_logs.CSVLogger
+        _experiment: null
+        _flush_logs_every_n_steps: 100
+        _fs: *id011
+        _name: MGAP
+        _prefix: ''
+        _root_dir: logs/GMAP/UNI/TCGA/IDH
+        _save_dir: logs/GMAP/UNI/TCGA/IDH
+        _version: ''
+  - !!python/tuple
+    - callbacks
+    - &id012
+      - !!python/object:pytorch_lightning.callbacks.early_stopping.EarlyStopping
+        _check_on_train_epoch_end: null
+        best_score: !!python/object/apply:torch._utils._rebuild_tensor_v2
+        - !!python/object/apply:torch.storage._load_from_bytes
+          - !!binary |
+            gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+            AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+            aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+            Z2UKcQFYCQAAADgwNjc3NjI1NnECWAMAAABjcHVxA0sBTnRxBFEugAJdcQBYCQAAADgwNjc3NjI1
+            NnEBYS4BAAAAAAAAAAAAgP8=
+        - 0
+        - !!python/tuple []
+        - !!python/tuple []
+        - false
+        - !!python/object/apply:collections.OrderedDict
+          - []
+        check_finite: true
+        divergence_threshold: null
+        log_rank_zero_only: false
+        min_delta: 0.0
+        mode: max
+        monitor: val_MulticlassAccuracy
+        patience: 40
+        stopped_epoch: 0
+        stopping_threshold: null
+        strict: true
+        verbose: true
+        wait_count: 0
+      - !!python/object:pytorch_lightning.callbacks.model_checkpoint.ModelCheckpoint
+        _enable_version_counter: true
+        _every_n_epochs: 1
+        _every_n_train_steps: 0
+        _fs: *id011
+        _last_checkpoint_saved: ''
+        _last_global_step_saved: 0
+        _last_time_checked: null
+        _save_on_train_epoch_end: null
+        _train_time_interval: null
+        auto_insert_metric_name: true
+        best_k_models: {}
+        best_model_path: ''
+        best_model_score: null
+        current_score: null
+        dirpath: null
+        filename: null
+        kth_best_model_path: ''
+        kth_value: !!python/object/apply:torch._utils._rebuild_tensor_v2
+        - !!python/object/apply:torch.storage._load_from_bytes
+          - !!binary |
+            gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+            AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+            aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+            Z2UKcQFYCQAAADgwNjc3NjY4OHECWAMAAABjcHVxA0sBTnRxBFEugAJdcQBYCQAAADgwNjc3NjY4
+            OHEBYS4BAAAAAAAAAAAAgH8=
+        - 0
+        - !!python/tuple []
+        - !!python/tuple []
+        - false
+        - !!python/object/apply:collections.OrderedDict
+          - []
+        last_model_path: ''
+        mode: min
+        monitor: null
+        save_last: null
+        save_top_k: 1
+        save_weights_only: false
+        verbose: false
+      - !!python/object:pytorch_lightning.callbacks.progress.tqdm_progress.TQDMProgressBar
+        _current_eval_dataloader_idx: null
+        _enabled: true
+        _leave: false
+        _predict_progress_bar: null
+        _process_position: 0
+        _refresh_rate: 1
+        _test_progress_bar: null
+        _train_progress_bar: null
+        _trainer: null
+        _val_progress_bar: null
+      - !!python/object:pytorch_lightning.callbacks.model_summary.ModelSummary
+        _max_depth: 1
+        _summarize_kwargs: {}
+  dictitems:
+    Data: *id007
+    General: *id004
+    Loss: *id010
+    Model: *id008
+    Optimizer: *id009
+    callbacks: *id012
+    conf_log_path: logs
+    config: config/GMAP.yaml
+    ds: TCGA
+    extractor: UNI
+    gen_type: IDH
+    infer_ds: *id013
+    load_loggers: *id014
+    log_path: *id015
+    mod_name: GMAP
+  state: *id016
+data: &id019 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - dataset_name
+    - camel_data
+  - !!python/tuple
+    - data_shuffle
+    - false
+  - !!python/tuple
+    - train_dataloader
+    - &id017 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - batch_size
+        - 1
+      - !!python/tuple
+        - num_workers
+        - 0
+      dictitems:
+        batch_size: 1
+        num_workers: 0
+      state: *id017
+  - !!python/tuple
+    - test_dataloader
+    - &id018 !!python/object/new:addict.addict.Dict
+      args:
+      - !!python/tuple
+        - batch_size
+        - 1
+      - !!python/tuple
+        - num_workers
+        - 1
+      dictitems:
+        batch_size: 1
+        num_workers: 1
+      state: *id018
+  dictitems:
+    data_shuffle: false
+    dataset_name: camel_data
+    test_dataloader: *id018
+    train_dataloader: *id017
+  state: *id019
+extractor: UNI
+log: !!python/object/apply:pathlib.PosixPath
+- logs
+- GMAP
+- UNI
+- TCGA
+- IDH
+- MGAP
+loss: &id020 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - base_loss
+    - CrossEntropyLoss
+  dictitems:
+    base_loss: CrossEntropyLoss
+  state: *id020
+mod_name: GMAP
+model: &id021 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - name
+    - GMAP
+  - !!python/tuple
+    - n_classes
+    - 2
+  dictitems:
+    n_classes: 2
+    name: GMAP
+  state: *id021
+optimizer: &id022 !!python/object/new:addict.addict.Dict
+  args:
+  - !!python/tuple
+    - opt
+    - lookahead_radam
+  - !!python/tuple
+    - lr
+    - 0.008
+  - !!python/tuple
+    - opt_eps
+    - null
+  - !!python/tuple
+    - opt_betas
+    - null
+  - !!python/tuple
+    - momentum
+    - null
+  - !!python/tuple
+    - weight_decay
+    - 1.0e-05
+  dictitems:
+    lr: 0.008
+    momentum: null
+    opt: lookahead_radam
+    opt_betas: null
+    opt_eps: null
+    weight_decay: 1.0e-05
+  state: *id022

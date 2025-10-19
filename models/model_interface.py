@@ -1,10 +1,8 @@
-import sys
-import numpy as np
+
 import inspect
 import importlib
 import random
 import pandas as pd
-import os
 
 #---->
 from MyOptimizer import create_optimizer
@@ -14,16 +12,13 @@ from utils.utils import cross_entropy_torch
 
 #---->
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torchmetrics
 from my_utils.utils import *
 
 #---->
 import pytorch_lightning as pl
-# from sklearn.metrics import auc, plot_roc_curve, roc_curve
 import my_utils.file_util as fu
-ATT_DIR = 'record_att'
+
 # import monai
 class  ModelInterface(pl.LightningModule):
 
@@ -74,9 +69,6 @@ class  ModelInterface(pl.LightningModule):
         #--->random
         self.shuffle = kargs['data'].data_shuffle
         self.count = 0
-        # self.extractor = CAM(self.model, 'norm', enable_hooks=True)
-
-        # self.extractor = GradCAM(self.model, 'layer2', enable_hooks=True)
         self.val_step_outputs = []
         self.output_results = []
         self.error_wsi = []
@@ -94,13 +86,11 @@ class  ModelInterface(pl.LightningModule):
         data, label = batch[0:2]
         results_dict = self.model(data=data, label=label)
         logits = results_dict['logits']
-        Y_prob = results_dict['Y_prob']
         Y_hat = results_dict['Y_hat']
 
         #---->loss
         loss = self.loss(logits, label)
 
-        #---->acc log
         Y_hat = int(Y_hat)
         Y = int(label)
         self.data[Y]["count"] += 1
@@ -126,8 +116,6 @@ class  ModelInterface(pl.LightningModule):
         Y_prob = results_dict['Y_prob']
         Y_hat = results_dict['Y_hat']
 
-
-        #---->acc log
         Y = int(label)
         self.data[Y]["count"] += 1
         self.data[Y]["correct"] += (Y_hat.item() == Y)
@@ -159,7 +147,6 @@ class  ModelInterface(pl.LightningModule):
             print(' Train class {}: acc {}, correct {}/{}\n'.format(c, acc, correct, count))
         self.data = [{"count": 0, "correct": 0} for i in range(self.n_classes)]
         
-        #---->random, if shuffle data, change seed
         if self.shuffle == True:
             self.count = self.count+1
             random.seed(self.count*50)
@@ -169,47 +156,16 @@ class  ModelInterface(pl.LightningModule):
         return [optimizer]
 
     def test_step(self, batch, batch_idx):
-        wsi_10X_root = '/media/zhaobingchao/MyBook/glioma/data/TCGA/TCGA_10X'
-        # save_path = '/media/zhaobingchao/MyBook/glioma/code/TransMIL_new/pre/heatmap/20Xori'
         data, label, index, npy_name, patient = batch
-        file_name = os.path.splitext(os.path.basename(npy_name[0][0]))[0]
-        # self.extractor._hooks_enabled = True
-        # with torch.enable_grad():
+
         data = torch.autograd.Variable(data, requires_grad=True)
-        # self.model.zero_grad()
         self.model = self.model.eval()
         results_dict = self.model(data=data, label=label)
         
         logits = results_dict['logits']
         Y_prob = results_dict['Y_prob']
         Y_hat = results_dict['Y_hat']
-        attention = results_dict['attention'].detach().cpu().numpy()
         index = index[0].detach().cpu().numpy()
-        save_csv_path = "pred_att/{}/{}/{}/{}/{}.csv".format(
-            self.kargs['cfg']['mod_name'],
-            self.kargs['cfg']['extractor'],
-            self.kargs['cfg']['infer_ds'],
-            self.kargs['cfg']['gen_type'],
-            patient[0]
-        )
-        # save_csv_path = '{}/{}/{}/{}/{}/20X_256/oriCamelyon/myTransMIL/fold0/{}_{}_patch_att.csv'.format(
-        #     self.kargs['cfg']['conf_log_path'],
-        #     self.kargs['cfg']['mod_name'],
-        #     self.kargs['cfg']['extractor'],
-        #     self.kargs['cfg']['infer_ds'],
-        #     self.kargs['cfg']['gen_type'],
-        #     self.kargs['cfg']['infer_ds'],
-        #     self.kargs['cfg']['gen_type'])
-        record = []
-        # for i in range(len(index)):
-        #     record.append([index[i][0], index[i][1], attention[i]])
-        # just_dir_of_file(save_csv_path)
-        # fu.write_csv_row(save_csv_path, record, model='w')
-
-        # ATT_DIR
-
-
-        self.pred_map_dir = "pre_att/{}/{}".format(self.kargs['cfg']['ds'],self.kargs['cfg']['gen_type'])
 
         Y = int(label)
         self.data[Y]["count"] += 1
@@ -234,7 +190,7 @@ class  ModelInterface(pl.LightningModule):
         metrics['auc'] = auc
 
 
-        save_csv_path = '{}/{}/{}/{}/{}/20X_256/oriCamelyon/myTransMIL/fold0/{}_{}_best_auc.csv'.format(
+        save_csv_path = '{}/{}/{}/{}/{}/MGAP/{}_{}_best_auc.csv'.format(
             self.kargs['cfg']['conf_log_path'],
             self.kargs['cfg']['mod_name'],
             self.kargs['cfg']['extractor'],
@@ -261,7 +217,7 @@ class  ModelInterface(pl.LightningModule):
         self.data = [{"count": 0, "correct": 0} for i in range(self.n_classes)]
         #---->
         result = pd.DataFrame([metrics])
-        save_csv_path = '{}/{}/{}/{}/{}/20X_256/oriCamelyon/myTransMIL/fold0/{}_{}_result.csv'.format(
+        save_csv_path = '{}/{}/{}/{}/{}/MGAP/{}_{}_result.csv'.format(
             self.kargs['cfg']['conf_log_path'],
             self.kargs['cfg']['mod_name'],
             self.kargs['cfg']['extractor'],
@@ -271,19 +227,6 @@ class  ModelInterface(pl.LightningModule):
             self.kargs['cfg']['gen_type'])
         result.to_csv(save_csv_path)
         
-        self.log_path = str(self.log_path).split('/')
-        self.log_path[1] = self.kargs['cfg']['infer_ds']
-        self.log_path = '/'.join(self.log_path)
-
-        save_csv_path = '{}/{}/{}/{}/{}/20X_256/oriCamelyon/myTransMIL/fold0/{}_{}_error_pred.csv'.format(
-            self.kargs['cfg']['conf_log_path'],
-            self.kargs['cfg']['mod_name'],
-            self.kargs['cfg']['extractor'],
-            self.kargs['cfg']['infer_ds'],
-            self.kargs['cfg']['gen_type'],
-            self.kargs['cfg']['infer_ds'],
-            self.kargs['cfg']['gen_type'])
-        fu.write_csv_row(save_csv_path,self.error_wsi, model='w')
 
 
     def load_model(self):
@@ -291,9 +234,7 @@ class  ModelInterface(pl.LightningModule):
             name = self.kargs['mod_name']
         else:
             name = self.kargs['cfg']['mod_name']#self.hparams.model.name
-        # Change the `trans_unet.py` file name to `TransUnet` class name.
-        # Please always name your model file name as `trans_unet.py` and
-        # class name or funciton name corresponding `TransUnet`.
+
         if '_' in name:
             camel_name = ''.join([i.capitalize() for i in name.split('_')])
         else:
@@ -307,10 +248,7 @@ class  ModelInterface(pl.LightningModule):
         pass
 
     def instancialize(self, Model, **other_args):
-        """ Instancialize a model using the corresponding parameters
-            from self.hparams dictionary. You can also input any args
-            to overwrite the corresponding value in self.hparams.
-        """
+
         class_args = inspect.getargspec(Model.__init__).args[1:]
         inkeys = self.hparams.model.keys()
         args1 = {}

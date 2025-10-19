@@ -1,5 +1,0 @@
-DATASET: TCGA # SMU TCGA
-GEN: IDH # IDH TERT 1p19q 7g10l
-ATT_MOD: GRADCAM # GRADCAM CAM
-SAVE_PATH: /media/zbc/M008/COMMA/Glioma/vis/nanfang_heatmap/gradcam_heatmap
-

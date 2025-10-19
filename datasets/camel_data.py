@@ -1,20 +1,13 @@
-from csv import list_dialects
+
 import random
 import torch
 import pandas as pd
-from pathlib import Path
 from tqdm import tqdm
 
 import torch.utils.data as data
-from torch.utils.data import dataloader
 from my_utils.utils import *
 import my_utils.file_util as fu
 import h5py
-import my_utils.file_util as fu
-FEATURE_EXTRACTOR = 'ResNet50' #"ResNet50" 'UNI'
-WSI_CONF =  fu.read_yaml("/media/zbc/18T_dtp/南方医院/code/Visualization/config/WSI_conf.yaml")
-ERNAME_DS = WSI_CONF["ERNAME_DS"]
-
 
 LABEL = {'1p19q':['codel', 'non-codel'],
         '7g10l':['Gain chr 7 & loss chr 10', 'No combined CNA'],
@@ -22,93 +15,29 @@ LABEL = {'1p19q':['codel', 'non-codel'],
         'IDH':['Mutant', 'WT']}
 
 DATA_DIR = {
-    'TCGA' : {'UNI': "feature_path",
+    'TCGA' : {'UNI': "/media/zbc/18T_dtp/南方医院/datasets_glioma/dtp_glioma(20倍)/TCGA_Glioma/224/feature_uni_v1/h5_files/",
               "ResNet50":"feature_path"},
     
-    'SMU' : {'UNI': 'feature_path',
-              "ResNet50":"feature_path"},
-    
-    'SWH' : {'UNI': 'feature_path/',
-              "ResNet50":"feature_path"},
-    
-    'SCH' : {'UNI': 'feature_path',
-              "ResNet50":"feature_path"},
-
 }
 
-TOTAL_LABEL_PATH = 'label_path'
-SMU_SVS_TO_PATIENT = "label/smu/smu_svs_to_patient.csv"
+TOTAL_LABEL_PATH = 'label/total_label.csv'
 
 def select_dataloader(dataset_name='TCGA', mod='train', gen_type='ATRX',extroctor='UNI'):
     if dataset_name=='TCGA':
         return TCGA_datset(mod=mod, gen_type=gen_type,
                            dataset=dataset_name,extroctor=extroctor)
 
-    else:
-        return IntegraDatset(mod=mod, gen_type=gen_type,
-                             dataset=dataset_name,extroctor=extroctor)
 
-def load_data_path(total_data, label, dataset, gen_type, mod, svs_to_patient=None):
-    load_data_list = []
-    no_label_data = []
-    for h5 in total_data:
-        wsi_name = get_name_from_path(h5)
-        patient_name = svs_to_patient[wsi_name]
-        if get_label(patient_name, label) is None: 
-            no_label_data.append(patient_name)
-            continue
-        load_data_list.append([h5, patient_name])
-    flow(f"'{dataset}' {gen_type} '{mod}' total svs num:{len(total_data)}. no label data num: {len(no_label_data)}")
-    if len(no_label_data)>0:
-        flow(f"No label data: {no_label_data}")
-    return load_data_list
-       
 def read_total_label(label_path, dataset,gen):
     gen_dict = {'TERT':"TERT", 
                 'IDH':"IDH", 
                 '1p19q':"1p/19q", 
                 '7g10l':"chr7_gain_chr10_loss"}
     data = pd.read_csv(label_path)
-    id_list = data['Path_id'][data['cohort']==ERNAME_DS[dataset]].tolist()
-    gen_event = data[gen_dict[gen]][data['cohort']==ERNAME_DS[dataset]].tolist()
+    id_list = data['Path_id'][data['cohort']==dataset].tolist()
+    gen_event = data[gen_dict[gen]][data['cohort']==dataset].tolist()
     return  {id_list[i].lower():gen_event[i] for i in range(len(id_list))}
 
-def svs_to_patient(total_data, dataset):
-    if dataset == 'SMU':
-        data = fu.csv_reader(SMU_SVS_TO_PATIENT)
-        data = {i[0]:i[1] for i in data}
-        return data
-    else:
-        if dataset == 'SWH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:7].lower() for i in total_data}
-        elif dataset == 'SCH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:10].lower() for i in total_data}
-        elif dataset == 'EBRAINS':
-            return {get_name_from_path(i):get_name_from_path(i).lower() for i in total_data}
-        elif dataset == 'GDPH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:7].lower() for i in total_data}
-        elif dataset == 'PUSZH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:7].lower() for i in total_data}
-        elif dataset == 'QMH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:8].lower() for i in total_data}
-        elif dataset == 'SDPH':
-            return {get_name_from_path(i):get_name_from_path(i)[0:8].lower() for i in total_data}
-        elif dataset == 'YCH':
-            ret = {}
-            for i in  total_data:
-                wsi_name = get_name_from_path(i)
-                wsi_name_ = wsi_name.split('.')[0]
-                wsi_name_ = '-'.join(wsi_name_.split('-')[0:2])
-                ret[wsi_name] = wsi_name_.lower()
-            return ret
-        elif dataset == 'THH':    
-            return {get_name_from_path(i): get_name_from_path(i)[0:9].lower() for i in total_data}
-        elif dataset == 'ZY':    
-            return {get_name_from_path(i): get_name_from_path(i)[0:10].lower() for i in total_data}
-        elif dataset == 'SJBH':    
-            return {get_name_from_path(i): get_name_from_path(i).split('-')[0].lower() for i in total_data}
-        elif dataset == 'YHDH':    
-            return {get_name_from_path(i): get_name_from_path(i).split('-')[0].lower() for i in total_data}
 
 def get_label(value, label):
     #value 需要小写
@@ -143,7 +72,6 @@ def load_data(gen_type,
     data,load_patient = [],[]
     flow('*'*20, f"Loading '{dataset}' {gen_type} '{mod}' data!! File num:{len(load_data_list)}.", '*'*20)
     for [h5, patient_name] in tqdm(load_data_list):
-        # label = get_label(gen_type, patient_name.lower(), labe_record)
         label = labe_record[patient_name.lower()]
         if label==1: pos_num+=1
         elif label==0: neg_num+=1
@@ -180,22 +108,16 @@ class TCGA_datset(data.Dataset):
         self.pos_num = 0
         self.neg_num = 0
 
-        random.seed(1122)
-        
         if mod == "train":
-            self.patient_name_list = fu.csv_reader('nflod/flod-0-train.csv')
+            self.patient_name_list = fu.csv_reader('data_split/train.csv')
         elif mod == "val":
-            self.patient_name_list = fu.csv_reader('nflod/flod-0-val.csv')
+            self.patient_name_list = fu.csv_reader('data_split/val.csv')
         elif mod == "test":
-            self.patient_name_list = fu.csv_reader('nflod/flod-0-test.csv')
+            self.patient_name_list = fu.csv_reader('data_split/test.csv')
         self.patient_name_list = [i[0] for i in self.patient_name_list]
         random.shuffle(self.patient_name_list)
         self.load_data_list = []
-        # self.load_data_list = load_data_path(self.total_data, 
-        #                                      self.label, dataset, 
-        #                                      gen_type, 
-        #                                      mod, 
-        #                                      svs_to_patient=self.svs_to_patient)
+
         no_label_data = []
         for h5 in self.total_data:
             wsi_name = get_name_from_path(h5)
@@ -205,6 +127,7 @@ class TCGA_datset(data.Dataset):
                 continue
             if patient_name in self.patient_name_list:
                 self.load_data_list.append([h5, patient_name])
+            if len(self.load_data_list)>=5: break
         flow(f"'{dataset}' {gen_type} '{mod}' total svs num:{len(self.total_data)}. no label data num: {len(no_label_data)}")
             
         self.data = load_data(gen_type,
@@ -230,43 +153,6 @@ class TCGA_datset(data.Dataset):
 
         return features, label, patch_index, h5_path, get_name_from_path(h5_path) 
     
-class IntegraDatset(data.Dataset):
-    def __init__(self,mod='train', gen_type='', dataset='',extroctor="UNI"):
-        flow('$'*30,f"dataset:{dataset}, gen_type:{gen_type},  FEATURE_EXTRACTOR:{extroctor}",'$'*30)
-        self.gen_type = gen_type
-        self.label = read_total_label(TOTAL_LABEL_PATH, dataset, gen_type)
-        self.mod = mod
-        self.data = []
-        self.total_data = find_file(DATA_DIR[dataset][extroctor], 1, suffix='.h5')
-        self.svs_to_patient = svs_to_patient(self.total_data, dataset)
-
-        self.load_data_list = load_data_path(self.total_data, 
-                                             self.label, dataset, 
-                                             gen_type, 
-                                             mod, 
-                                             svs_to_patient=self.svs_to_patient)
-        self.data = load_data(gen_type,
-                                self.load_data_list, 
-                                self.label, 
-                                load_patient=None, 
-                                dataset=dataset, 
-                                mod=mod)
-        
-    def __len__(self):
-        return len(self.data)
-    
-    def __getitem__(self, idx):
-        features, patch_index, patient_name,h5_path  = self.data[idx]
-
-        label = get_label( patient_name, self.label)
-        if self.mod == 'train':
-            index = [x for x in range(features.shape[0])]
-
-            random.shuffle(index)
-            features = features[index]
-            patch_index = patch_index[index]
-
-        return features, label, patch_index, h5_path, get_name_from_path(h5_path) 
 
 
 
