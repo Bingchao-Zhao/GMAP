@@ -24,24 +24,25 @@ pip install -r requirements.txt
 ### Magnification
 GMAP was trained and evaluated using whole slide images (WSIs) at a magnification of 20×. For consistency and optimal feature representation, it is advisable to maintain the input images at 20× magnification during the feature extraction stage.
 
-### Tissue Segmentation and Feature Extraction
-The preprocessing and feature extraction steps in this study follow the same protocol as described in the CLAM framework. For implementation details, please refer to: https://github.com/mahmoodlab/CLAM.
-
-### Feature Path Configuration
-Prior to executing GMAP, it is necessary to configure the paths to both the feature and label files.
-Before training or testing variable `DATA_DIR` in `datasets/camel_data.py` needs to be modified to the feature path obtained in the data preprocessing stage.
-For the labels, b should be modified in a.
+`Note: Training and testing can still be performed using WSI at other magnifications, but results may differ from those reported in the paper.`
 
 ### Label
-We place the labels of the TCGA datasets IDH, 1p19q,TERT and +7/-10 in `label/total_label.csv` as an example. In the table, `1` represents: 'IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 molecular event.
+We place the labels of the TCGA datasets IDH, 1p19q,TERT and +7/-10 in `label/total_label.csv` as an example. In the table, `1` represents: 'IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 molecular event，`0` indicates the wild-type.
+
+### 1. Tissue Segmentation and Feature Extraction
+The preprocessing and feature extraction steps in this study follow the same protocol as described in the CLAM framework. For implementation details, please refer to: https://github.com/mahmoodlab/CLAM.
+
+### 2. Feature Path Configuration
+
+Before training or testing, the path to the feature data must be modified. Specifically, variable `DATA_DIR` in `datasets/camel_data.py` must be changed to the feature path saved during the feature extraction step.
 
 
-## Train
+## 3. Train
 
 ```python
 python train.py --stage='train'  
 ```
-## Test
+## 4. Test
 ```python
 python train.py --stage='test' 
 ```
