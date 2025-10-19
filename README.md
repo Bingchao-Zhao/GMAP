@@ -1,5 +1,5 @@
 # Molecular alterations prediction in gliomas via an interpretable computational pathology model: a multicentre and retrospective study
-![Pipline](./figure/Figure.png)
+![Pipline](figure/figure.png)
 
 ### Summary
 ### Background 
