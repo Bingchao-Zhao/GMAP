@@ -10,9 +10,9 @@ from pytorch_lightning import Trainer
 
 def make_parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--stage', default='test', type=str,
+    parser.add_argument('--stage', default='train', type=str,
                         help='train, test')
-    parser.add_argument('--gen_type', default='IDH', type=str,
+    parser.add_argument('--gen_type', default='7g10l', type=str,
                         help='TERT, IDH, 1p19q, 7g10l')
     parser.add_argument('--mod_name', default='GMAP', type=str)
     parser.add_argument('--extractor', default='UNI' , type=str,
