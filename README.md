@@ -61,6 +61,7 @@ In the `train.py` script:
 python train.py --stage='test' 
 ```
 
-### Inference weight
+### Model weights
 We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
+## Citation
