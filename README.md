@@ -57,7 +57,7 @@ python train.py --stage='train'
 In the `train.py` script:
 * `--stage`: 'train' or 'test'.
 * `--gen_type`: The genotype to be predicted. 'TERT, IDH, 1p19q and 7g10l'
-* `--extractor`: Foundation modl of feature extraction.
+* `--extractor`: Foundation model of feature extraction.
 
 ### 6. Testing
 ```python
@@ -65,9 +65,10 @@ python train.py --stage='test'
 ```
 
 ## Model weights
-We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
+We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and +7/-10. These weights were trained on the TCGA-Glioma (combined TCGA-LGG and TCGA-GBM) dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Drive (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
 ## Citation
+
 
 
 
