@@ -27,7 +27,7 @@ GMAP was trained and evaluated using whole slide images (WSIs) at a magnificatio
 `Note: Training and testing can still be performed using WSI at other magnifications, but results may differ from those reported in the paper.`
 
 ### Label
-We place the labels of the TCGA datasets IDH, 1p19q,TERT and +7/-10 in `label/total_label.csv` as an example. In the table, `1` represents: 'IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 molecular event，`0` represents the wild-type.
+We place the labels of the TCGA datasets IDH, 1p19q,TERT and +7/-10 in `label/total_label.csv` as an example. In the table, `1` represents: 'IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 positive，`0` represents the wild-type or negative.
 
 ### 1. Tissue segmentation and feature extraction
 The preprocessing and feature extraction step in this study follow the same protocol as described in the CLAM framework. Feature extraction of slide can be performed using either the `ResNet50` or `UNI`. The optimal performance in this paper comes from the features extracted by `UNI`. For implementation details, please refer to: https://github.com/mahmoodlab/CLAM.
@@ -36,10 +36,10 @@ The preprocessing and feature extraction step in this study follow the same prot
 Before training or testing, the path to the feature data must be modified. Specifically, variable `DATA_DIR` in `datasets/my_dataloader.py` must be changed to the feature path saved during the feature extraction step. Note that the path needs to be matched with the feature extraction model being used.
 
 ### 3. Data split
-Before running the code, the dataset needs to be divided. Taking the TCGA dataset as an example, the dataset is divided into train set, validation set and test set. And save the patient ID in each set as `CSV` files, named 'train.csv', 'val.csv' and 'test.csv' respectively, and place them in the `data_split` directory. The format of `CSV` is:
+Before running the code, the dataset needs to be divided into training, validation and test sets. And save the patient ID in each set as a `CSV` file, named 'train.csv', 'val.csv' and 'test.csv' respectively, and place them in the `data_split` directory. The format of `CSV` is:
 
 ```python
-#train.csv
+#training.csv
 patient1
 patient2
 ...
@@ -65,3 +65,4 @@ python train.py --stage='test'
 We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
 ## Citation
+
