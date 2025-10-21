@@ -12,7 +12,7 @@ def make_parse():
     parser = argparse.ArgumentParser()
     parser.add_argument('--stage', default='train', type=str,
                         help='train, test')
-    parser.add_argument('--gen_type', default='7g10l', type=str,
+    parser.add_argument('--gen_type', default='TERT', type=str,
                         help='TERT, IDH, 1p19q, 7g10l')
     parser.add_argument('--mod_name', default='GMAP', type=str)
     parser.add_argument('--extractor', default='UNI' , type=str,
@@ -38,7 +38,6 @@ def main(cfg):
                 'train_num_workers': cfg.Data.train_dataloader.num_workers,
                 'test_batch_size': cfg.Data.test_dataloader.batch_size,
                 'test_num_workers': cfg.Data.test_dataloader.num_workers,
-                'dataset_name': cfg.Data.dataset_name,
                 'dataset_cfg': cfg.Data,
                 'gen_type':cfg.gen_type,
                 'ds':cfg.ds,

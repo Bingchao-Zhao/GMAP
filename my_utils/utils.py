@@ -243,7 +243,7 @@ def just_ff(path:str,*,file=False,floder=True,create_floder=False, info=True):
                 try:
                     os.makedirs(path) 
                     if info:
-                        tips(r"Path '{}' does not exists, but created ！！".format(path))
+                        tips(r"Path '{}' does not exists, but created !!".format(path))
                     return True
                 except ValueError:
                     if info:
@@ -251,7 +251,7 @@ def just_ff(path:str,*,file=False,floder=True,create_floder=False, info=True):
                     pass
             else:
                 if info:
-                    tips(r"Path '{}' does not exists！！".format(path))
+                    tips(r"Path '{}' does not exists!!".format(path))
                 return False
                 
 

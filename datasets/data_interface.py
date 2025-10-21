@@ -2,7 +2,7 @@ import inspect #
 import importlib # In order to dynamically import the library
 import pytorch_lightning as pl
 from torch.utils.data import random_split, DataLoader
-from datasets import camel_data as cd
+from datasets import my_dataloader as cd
 
 class DataInterface(pl.LightningDataModule):
 

@@ -12,11 +12,9 @@ General:
     patience: 40
     server: test #train #test
     log_path: logs # logs/test logs
-    model_name: MGAP
+    model_name: GMAP
 Data:
-    dataset_name: camel_data
     data_shuffle: False
-
 
     train_dataloader:
         batch_size: 1 
@@ -33,8 +31,6 @@ Model:
 
 Optimizer:
     opt: lookahead_radam
-    # lr: 0.00001
-    # lr: 0.001
     lr: 0.008
     opt_eps: null 
     opt_betas: null

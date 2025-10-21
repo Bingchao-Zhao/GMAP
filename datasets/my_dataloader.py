@@ -15,7 +15,7 @@ LABEL = {'1p19q':['codel', 'non-codel'],
         'IDH':['Mutant', 'WT']}
 
 DATA_DIR = {
-    'TCGA' : {'UNI': "/media/zbc/18T_dtp/南方医院/datasets_glioma/dtp_glioma(20倍)/TCGA_Glioma/224/feature_uni_v1/h5_files/",
+    'TCGA' : {'UNI': "feature_path",
               "ResNet50":"feature_path"},
     
 }

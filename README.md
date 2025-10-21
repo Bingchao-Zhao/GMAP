@@ -30,23 +30,37 @@ GMAP was trained and evaluated using whole slide images (WSIs) at a magnificatio
 We place the labels of the TCGA datasets IDH, 1p19q,TERT and +7/-10 in `label/total_label.csv` as an example. In the table, `1` represents: 'IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 molecular event，`0` indicates the wild-type.
 
 ### 1. Tissue Segmentation and Feature Extraction
-The preprocessing and feature extraction steps in this study follow the same protocol as described in the CLAM framework. For implementation details, please refer to: https://github.com/mahmoodlab/CLAM.
+The preprocessing and feature extraction steps in this study follow the same protocol as described in the CLAM framework. Feature extraction of slide can be performed using either the `Reset50` or `UNI` model. The optimal performance in this paper comes from the features extracted by `UNI`. For implementation details, please refer to: https://github.com/mahmoodlab/CLAM.
 
 ### 2. Feature Path Configuration
+Before training or testing, the path to the feature data must be modified. Specifically, variable `DATA_DIR` in `datasets/my_dataloader.py` must be changed to the feature path saved during the feature extraction step. Note that the path needs to be matched with the feature extraction model being used.
 
-Before training or testing, the path to the feature data must be modified. Specifically, variable `DATA_DIR` in `datasets/camel_data.py` must be changed to the feature path saved during the feature extraction step.
+### 3. Data split
+Before running the code, the dataset needs to be divided. Taking the TCGA dataset as an example, the dataset is divided into train, validation and test. And save the patient numbers in each set as `CSV` files, named 'train.csv', 'val.csv' and 'test.csv' respectively, and place them in the `data_split` directory. The format of `CSV` is:
 
+```python
+#train.csv
+patient1
+patient2
+...
+```
 
-## 3. Train
+### 4. Train
 
 ```python
 python train.py --stage='train'  
 ```
-## 4. Test
+
+In the `train.py` script:
+* `--stage`: 'train' or 'test'.
+* `--gen_type`: The genotype to be predicted. 'TERT, IDH, 1p19q and 7g10l'
+* `--extractor`: Foundation modl of feature extraction.
+
+### 5. Test
 ```python
 python train.py --stage='test' 
 ```
 
 ### Inference weight
-We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/MGAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
+We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
