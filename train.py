@@ -1,6 +1,4 @@
 import argparse
-import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from datasets import DataInterface
 from models import ModelInterface
 from utils.utils import *
@@ -68,7 +66,8 @@ def main(cfg):
                         accumulate_grad_batches=cfg.General.grad_acc,
                         deterministic=True,
                         check_val_every_n_epoch=1,
-                        detect_anomaly=True
+                        detect_anomaly=True,
+                        strategy='ddp_find_unused_parameters_true'
                     )
 
     if cfg.General.server == 'train':
