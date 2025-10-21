@@ -1,7 +1,7 @@
 # Molecular alterations prediction in gliomas via an interpretable computational pathology model: a multicentre and retrospective study
 ![Pipline](figure/figure.png)
 
-### Summary
+## Summary
 ### Background 
 Molecular profiling of gliomas plays a pivotal role in diagnosis, treatment selection, and prognostic assessment. However, it heavily relies on the time-consuming and expensive genomic testing, which largely inaccessible in resource-limited settings. To enable cost-effective and scalable identification of molecular alterations, we developed and validated a foundation model-empowered interpretable approach to predict four key molecular events directly from routine histopathology slides without manual annotation.
 
@@ -21,21 +21,21 @@ conda activate GMAP
 pip install -r requirements.txt
 ```
 
-## Magnification
+### Magnification
 GMAP was trained and evaluated using whole slide images (WSIs) at a magnification of 20×. For consistency and optimal feature representation, it is advisable to maintain the input images at 20× magnification during the feature extraction stage.
 
 `Note: Training and testing can still be performed using WSI at other magnifications, but results may differ from those reported in the paper.`
 
-## Label
+### Label
 In the csv file `label/total_label.csv` that recorded label information, `1` represents: IDH mutation, 1p19q co-deletion, TERT mutation and +7/-10 positive，`0` represents the wild-type or negative, `na` means the label is not available.
 
-## 1. Tissue segmentation and feature extraction
+### 1. Tissue segmentation and feature extraction
 The WSI preprocessing and feature extraction step in this study follow the same protocol as described in the CLAM framework (https://github.com/mahmoodlab/CLAM). Feature extraction of slide can be performed using either `UNI` or other pathology foundation models. GMAP applied `UNI` as the tile-level features extractor.
 
-## 2. Feature path configuration
+### 2. Feature path configuration
 Before training or testing, the path to the feature data must be modified. Specifically, variable `DATA_DIR` in `datasets/my_dataloader.py` must be changed to the feature path saved during the feature extraction step. Note that the path needs to be matched with the feature extraction model being used.
 
-## 3. Data split
+### 3. Data split
 Before running the code, the dataset needs to be divided into training, validation and test sets. And save the patient ID in each set as a `CSV` file, named 'train.csv', 'val.csv' and 'test.csv' respectively, and place them in the `data_split` directory. The format of `CSV` is:
 
 ```python
@@ -56,7 +56,7 @@ In the `train.py` script:
 * `--gen_type`: The genotype to be predicted. 'TERT, IDH, 1p19q and 7g10l'
 * `--extractor`: Foundation modl of feature extraction.
 
-## 5. Testing
+### 5. Testing
 ```python
 python train.py --stage='test' 
 ```
@@ -65,6 +65,7 @@ python train.py --stage='test'
 We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and 7+/10−. These weights were trained on the TCGA-Glioma dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Cloud (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
 ## Citation
+
 
 
 
