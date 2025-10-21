@@ -40,7 +40,6 @@ def read_total_label(label_path, dataset,gen):
 
 
 def get_label(value, label):
-    #value 需要小写
     # pos, neg = LABEL[gen_type][0], LABEL[gen_type][1]
     
     if label.get(value.lower()) is None: return None
@@ -54,7 +53,6 @@ def get_label(value, label):
 def load_h5(data_path):
     file = h5py.File(data_path, 'r')
  
-    # 获取h5文件中的数据集
     features = file['features']
     features = features[()]
     coords = file['coords']
