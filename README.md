@@ -2,11 +2,17 @@
 ![Pipline](figure/figure.png)
 
 ## Summary
-### Background 
-Molecular profiling of gliomas plays a pivotal role in diagnosis, treatment selection, and prognostic assessment. However, it heavily relies on the time-consuming and expensive genomic testing, which largely inaccessible in resource-limited settings. To enable cost-effective and scalable identification of molecular alterations, we developed and validated a foundation model-empowered interpretable approach to predict four key molecular events directly from routine histopathology slides without manual annotation.
+### Background
+Molecular profiling of gliomas plays a pivotal role in diagnosis, treatment selection, and prognostic assessment. However, it heavily relies on the time-consuming and expensive genomic testing, which largely inaccessible in resource-limited settings. To enable cost-effective and scalable identification of molecular alterations, we developed and validated a foundation model-based interpretable approach to predict key molecular events directly from routine histopathology slides without manual annotation.
 
-### Methods 
-In this multicenter retrospective study, we collected the histopathology slides from patients underwent glioma resection at 12 Chinese hospitals and downloaded two publicly available datasets from The Cancer Genome Atlas (TCGA) and EBRAINS databases. The internal development cohort comprised 1,696 whole slide images (WSIs) from 877 patients downloaded from TCGA. The remaining 13 centers, consisting of 4,602 WSIs from 3,147 patients, were regarded as the external validation cohorts to evaluate the model generalizability. We developed **GMAP** (Glioma Molecular Alterations Predictor), a foundation model-powered computational pathology approach that predicts four key molecular alterations, including IDH mutation, 1p/19q co-deletion, TERT promoter mutation, and chromosome 7 gain/10 loss (+7/-10). The model's interpretability was comprehensively evaluated through cellular- and morphological-level analysis of high-contribution tiles, and comparative assessment between model-generated heatmaps and corresponding immunohistochemical staining patterns.
+### Methods
+We developed GMAP (Glioma Molecular Alterations Predictor), a foundation model-based approach using 1,696 whole slide images (WSIs) from 877 patients downloaded from TCGA. The model was validated on an internal test set (167 WSIs from 88 patients) and a grouped external validation set (4,602 WSIs from 3,147 patients; 12 Chinese hospital and a public dataset EBRAINS). The performance was primarily evaluated by the area under the receiver operating curve (AUROC), accuracy, sensitivity, specificity and F1 score. The interpretability was evaluated through multi-level analysis of high-contribution tiles, and comparative assessment between model-generated heatmaps and corresponding immunohistochemical staining patterns.
+
+### Findings
+The GMAP achieved an AUC of 0.939 (95% CI: 0.875–0.993) for IDH, 0.955 (95% CI: 0.898–0.992) for 1p/19q, 0.944 (95% CI: 0.849–1.000) for TERT, and 0.886 (95% CI: 0.802–0.955) for +7/-10 on the internal test set, respectively. Grouped external validation showed robust generalizability with AUROC of 0.870 (95% CI: 0.857–0.883) for IDH, 0.885 (95% CI: 0.865–0.905) for 1p/19q, 0.694 (95% CI: 0.665–0.724) for TERT, and 0.672 (95% CI: 0.615–0.727) for +7/-10. Interpretability analysis demonstrated that GMAP captured both known morphological characteristics associated with molecular alterations and previously unrecognized associations.
+
+### Interpretation
+GMAP offered a technically feasible approach for accurate, fast, and potentially cost-effective identification of molecular alterations in resource-constrained settings. Interpretability analysis revealed potential genotype-phenotype correlation, which improve the model’s trustworthiness for clinical adoption.
 
 ## Running projects
 ### Installation
@@ -68,6 +74,7 @@ python train.py --stage='test'
 We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and +7/-10. These weights were trained on the TCGA-Glioma (combined TCGA-LGG and TCGA-GBM) dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Drive (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
 ## Citation
+
 
 
 
