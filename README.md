@@ -1,4 +1,4 @@
-<img width="432" height="34" alt="image" src="https://github.com/user-attachments/assets/5c6c0201-9f4f-4549-bbaf-39f5cd17c1f7" /><img width="432" height="80" alt="image" src="https://github.com/user-attachments/assets/d562a00e-b48f-4ca3-9ad6-5ba2a3f8a883" /><img width="432" height="80" alt="image" src="https://github.com/user-attachments/assets/1bcd76b9-3202-4eca-a3dc-6911900b2d1c" /># Molecular alterations prediction in gliomas via an interpretable computational pathology model: a multicentre and retrospective study
+# Molecular alterations prediction in gliomas via an interpretable computational pathology model: a multicentre and retrospective study
 ![Pipline](figure/figure.png)
 
 ## Summary
@@ -74,6 +74,7 @@ python train.py --stage='test'
 We provide the model weights reported in the paper for the molecular diagnoses of IDH, 1p19q, TERT, and +7/-10. These weights were trained on the TCGA-Glioma (combined TCGA-LGG and TCGA-GBM) dataset using UNI as the feature extractor. For inference, place the model in the corresponding directory (`logs/GMAP/UNI/TCGA/(gen)/GMAP`) and run the script in "test" mode. The model weights can be downloaded from Google Drive (https://drive.google.com/file/d/17X5aLFs8ZiZ9z-0Jwg-hEhg2pQAshpDo/view?usp=sharing).
 
 ## Citation
+
 
 
 
